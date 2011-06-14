@@ -304,4 +304,4 @@ The service name in the helper `Container` doubles as a method name on the `Temp
 
 Note that we can use any method name for the helper, although it is generally useful to name the service for the helper class.
 
-Please examine the classes in `Aura\View\helper` for more complex and powerful examples.
+Please examine the classes in `Aura\View\Helper` for more complex and powerful examples.
