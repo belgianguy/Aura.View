@@ -8,7 +8,7 @@ Aura View
 
 The Aura View package is an implementation of the [TemplateView](http://martinfowler.com/eaaCatalog/templateView.html) pattern, with support for helpers and path stacks.  It adheres to the "use PHP for presentation logic" ideology, and is preceded by systems such as [Savant](http://phpsavant.com), [Zend_View](http://framework.zend.com/manual/en/zend.view.html), and [Solar_View](http://solarphp.com/class/Solar_View).
 
-This package depends on the [Aura DI](https://github.com/auraphp/aura.di) package.
+This package depends on the [Aura DI](https://github.com/auraphp/Aura.Di) package.
 
 
 Basic Usage
@@ -17,12 +17,12 @@ Basic Usage
 Instantiation
 -------------
 
-The easiest way to instantiate a new `Template` with all the associated helpers is to include the [Aura DI](https://github.com/auraphp/aura.di) package source, then call the `instance.php` script.
+The easiest way to instantiate a new `Template` with all the associated helpers is to include the [Aura DI](https://github.com/auraphp/Aura.Di) package source, then call the `instance.php` script.
 
     <?php
     // business logic
-    require_once '/path/to/aura.di/src.php';
-    $template = require '/path/to/aura.view/scripts/instance.php';
+    require_once '/path/to/Aura.Di/src.php';
+    $template = require '/path/to/Aura.View/scripts/instance.php';
 
 Then use the `Template` object to `fetch()` the output of a template script.
 
@@ -33,11 +33,11 @@ Then use the `Template` object to `fetch()` the output of a template script.
 Alternatively, we can add the `aura.di/src` and `aura.view/src` directories to an autoloader, and instantiate manually:
 
     <?php
-    use aura\di\Container;
-    use aura\di\Forge;
-    use aura\di\Config;
-    use aura\view\Template;
-    use aura\view\Finder;
+    use Aura\Di\Container;
+    use Aura\Di\Forge;
+    use Aura\Di\Config;
+    use Aura\View\Template;
+    use Aura\View\Finder;
     $template = new Template(
         // a helper container
         new Container(new Forge(new Config)),
@@ -273,8 +273,8 @@ There are two steps to adding new helpers:
 Writing a helper class is straightforoward:  extend `AbstractHelper` with an `__invoke()` method.  The following helper, for example, applies ROT-13 to a string.
 
     <?php
-    namespace vendor\view\helper;
-    use aura\view\helper\AbstractHelper;
+    namespace Vendor\View\Helper;
+    use Aura\View\Helper\AbstractHelper;
     
     class Obfuscate extends AbstractHelper
     {
@@ -293,7 +293,7 @@ Now that we have a helper class, you can add it as a service in the helper `Cont
     $hc = $template->getHelperContainer();
     
     $hc->set('obfuscate', function() use ($hc) {
-        return $hc->newInstance('vendor\view\helper\Obfuscate');
+        return $hc->newInstance('Vendor\View\Helper\Obfuscate');
     });
     
 The service name in the helper `Container` doubles as a method name on the `Template` object.  This means we can call the helper via `$this->obfuscate()`:
@@ -304,4 +304,4 @@ The service name in the helper `Container` doubles as a method name on the `Temp
 
 Note that we can use any method name for the helper, although it is generally useful to name the service for the helper class.
 
-Please examine the classes in `aura\view\helper` for more complex and powerful examples.
+Please examine the classes in `Aura\View\helper` for more complex and powerful examples.
