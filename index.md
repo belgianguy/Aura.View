@@ -30,7 +30,7 @@ Then use the `Template` object to `fetch()` the output of a template script.
     // business logic
     echo $template->fetch('/path/to/tpl.php');
 
-Alternatively, we can add the `aura.di/src` and `aura.view/src` directories to an autoloader, and instantiate manually:
+Alternatively, we can add the `Aura.Di/src` and `Aura.View/src` directories to an autoloader, and instantiate manually:
 
     <?php
     use Aura\Di\Container;
