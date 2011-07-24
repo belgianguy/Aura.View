@@ -273,7 +273,7 @@ There are two steps to adding new helpers:
 Writing a helper class is straightforoward:  extend `AbstractHelper` with an `__invoke()` method.  The following helper, for example, applies ROT-13 to a string.
 
     <?php
-    namespace Vendor\View\Helper;
+    namespace Vendor\Package\View\Helper;
     use Aura\View\Helper\AbstractHelper;
     
     class Obfuscate extends AbstractHelper
@@ -293,7 +293,7 @@ Now that we have a helper class, you can add it as a service in the helper `Cont
     $hc = $template->getHelperContainer();
     
     $hc->set('obfuscate', function() use ($hc) {
-        return $hc->newInstance('Vendor\View\Helper\Obfuscate');
+        return $hc->newInstance('Vendor\Package\View\Helper\Obfuscate');
     });
     
 The service name in the helper `Container` doubles as a method name on the `Template` object.  This means we can call the helper via `$this->obfuscate()`:
