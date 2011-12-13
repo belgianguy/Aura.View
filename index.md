@@ -1,5 +1,5 @@
 ---
-title: The Aura View package, implementation of the TemplateView
+title: The Aura.View Package
 layout: default
 ---
 
@@ -7,8 +7,6 @@ Aura View
 =========
 
 The Aura View package is an implementation of the [TemplateView](http://martinfowler.com/eaaCatalog/templateView.html) pattern, with support for helpers and path stacks.  It adheres to the "use PHP for presentation logic" ideology, and is preceded by systems such as [Savant](http://phpsavant.com), [Zend_View](http://framework.zend.com/manual/en/zend.view.html), and [Solar_View](http://solarphp.com/class/Solar_View).
-
-This package depends on the [Aura DI](https://github.com/auraphp/Aura.Di) package.
 
 
 Basic Usage
@@ -33,19 +31,12 @@ Then use the `Template` object to `fetch()` the output of a template script.
 Alternatively, we can add the `Aura.Di/src` and `Aura.View/src` directories to an autoloader, and instantiate manually:
 
     <?php
-    use Aura\Di\Container;
-    use Aura\Di\Forge;
-    use Aura\Di\Config;
     use Aura\View\Template;
     use Aura\View\Finder;
-    $template = new Template(
-        // a helper container
-        new Container(new Forge(new Config)),
-        // a template finder
-        new Finder
-    );
+    use Aura\View\HelperLocator;
+    $template = new Template(new Finder, new HelperLocator);
 
-(Note that if we instantiate manually, we will need to configure the `Container` manually to add helper services. See the "Helpers" section near the end of this page for more information.)
+(Note that if we instantiate manually, we will need to configure the `HelperLocator` manually to add helper services. See the "Helpers" section near the end of this page for more information.)
 
 
 Assigning Data
@@ -182,9 +173,9 @@ Other helpers that are part of Aura View include:
     
     - `$this->title()->getRaw()` returns the title tag, with the title itself *not* escaped.
 
+
 Advanced Usage
 ==============
-
 
 The Template Finder
 -------------------
@@ -268,7 +259,7 @@ There are two steps to adding new helpers:
 
 1. Write a helper class
 
-2. Add that class as a service in the helper `Container`
+2. Add that class as a service `HelperLocator`
 
 Writing a helper class is straightforoward:  extend `AbstractHelper` with an `__invoke()` method.  The following helper, for example, applies ROT-13 to a string.
 
@@ -286,17 +277,16 @@ Writing a helper class is straightforoward:  extend `AbstractHelper` with an `__
 
 Always escape output coming from a helper.  Err on the side of escaping, rather than not escaping.
 
-Now that we have a helper class, you can add it as a service in the helper `Container` like so:
+Now that we have a helper class, you can add it as a service in the `HelperLocator` like so:
 
     <?php
     // business logic
-    $hc = $template->getHelperContainer();
-    
-    $hc->set('obfuscate', function() use ($hc) {
-        return $hc->newInstance('Vendor\Package\View\Helper\Obfuscate');
+    $hl = $template->getHelperLocator();
+    $hl->set('obfuscate', function() {
+        return new \Vendor\Package\View\Helper\Obfuscate;
     });
     
-The service name in the helper `Container` doubles as a method name on the `Template` object.  This means we can call the helper via `$this->obfuscate()`:
+The service name in the `HelperLocator` doubles as a method name on the `Template` object.  This means we can call the helper via `$this->obfuscate()`:
 
     <?php
     // template script
