@@ -15,26 +15,23 @@ Basic Usage
 Instantiation
 -------------
 
-The easiest way to instantiate a new `Template` with all the associated helpers is to include the [Aura DI](https://github.com/auraphp/Aura.Di) package source, then call the `instance.php` script.
+The easiest way to instantiate a new `Template` with all the associated helpers is to include the `instance.php` script.
 
     <?php
-    // business logic
-    require_once '/path/to/Aura.Di/src.php';
     $template = require '/path/to/Aura.View/scripts/instance.php';
 
 Then use the `Template` object to `fetch()` the output of a template script.
 
     <?php
-    // business logic
     echo $template->fetch('/path/to/tpl.php');
 
-Alternatively, we can add the `Aura.Di/src` and `Aura.View/src` directories to an autoloader, and instantiate manually:
+Alternatively, we can add the `Aura.View` package to an autoloader, and instantiate manually:
 
     <?php
     use Aura\View\Template;
-    use Aura\View\Finder;
+    use Aura\View\TemplateFinder;
     use Aura\View\HelperLocator;
-    $template = new Template(new Finder, new HelperLocator);
+    $template = new Template(new TemplateFinder, new HelperLocator);
 
 (Note that if we instantiate manually, we will need to configure the `HelperLocator` manually to add helper services. See the "Helpers" section near the end of this page for more information.)
 
@@ -110,7 +107,7 @@ We can use any PHP code we would normally use. (This may require discipline on t
 Using Helpers
 -------------
 
-Aura View comes with various `Helper` classes to encapsulate common presentation logic.  These helpers are mapped to the `Template` object through a helper `Container`. We can call a helper in one of two ways:
+Aura View comes with various `Helper` classes to encapsulate common presentation logic.  These helpers are mapped to the `Template` object through a `HelperLocator`. We can call a helper in one of two ways:
 
 - As a method on the `Template` object
 
@@ -180,13 +177,13 @@ Advanced Usage
 The Template Finder
 -------------------
 
-Although we can use an absolute template script path with `fetch()`, it is more powerful to specify one or more paths where template scripts are located. Then we can `fetch()` based on a template name, and the `Finder` will search through the assigned paths for that template.  This allows us to specify baseline templates, and override them as needed.
+Although we can use an absolute template script path with `fetch()`, it is more powerful to specify one or more paths where template scripts are located. Then we can `fetch()` based on a template name, and the `TemplateFinder` will search through the assigned paths for that template.  This allows us to specify baseline templates, and override them as needed.
 
-To tell the `Finder` where to find template scripts, get it from the `Template` and use `setPaths()`.
+To tell the `TemplateFinder` where to find template scripts, get it from the `Template` and use `setPaths()`.
 
     <?php
     // business logic
-    $finder = $template->getFinder();
+    $finder = $template->getTemplateFinder();
     
     // set the paths where templates can be found
     $finder->setPaths(array(
@@ -195,9 +192,9 @@ To tell the `Finder` where to find template scripts, get it from the `Template` 
         '/path/to/templates/baz',
     ));
 
-Now when we call `fetch()`, the `Template` object will use the `Finder` to look through those directories for the template script we specified.
+Now when we call `fetch()`, the `Template` object will use the `TemplateFinder` to look through those directories for the template script we specified.
 
-For example, if we `echo $template->fetch('tpl')` the `Finder` will look through each of the directories in turn to use the first 'tpl.php' template script it finds.  This allows us to set up several locations for templates, and put replacement templates in locations the `Finder` will get to before the baseline ones.
+For example, if we `echo $template->fetch('tpl')` the `TemplateFinder` will look through each of the directories in turn to use the first 'tpl.php' template script it finds.  This allows us to set up several locations for templates, and put replacement templates in locations the `TemplateFinder` will get to before the baseline ones.
 
 
 Template Composition
@@ -259,7 +256,7 @@ There are two steps to adding new helpers:
 
 1. Write a helper class
 
-2. Add that class as a service `HelperLocator`
+2. Add that class as a service in the `HelperLocator`
 
 Writing a helper class is straightforoward:  extend `AbstractHelper` with an `__invoke()` method.  The following helper, for example, applies ROT-13 to a string.
 
