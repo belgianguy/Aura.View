@@ -1,5 +1,5 @@
 ---
-title: Aura for PHP; TemplateView and TwoStepView Implementation
+title: Aura for PHP: TemplateView and TwoStepView Implementation
 layout: default
 ---
 
@@ -56,10 +56,10 @@ We can add multiple data properties at once, merging new values with existing on
 
     <?php
     // business logic
-    $template->addData(array(
+    $template->addData([
         'foo' => 'Value of foo',
         'bar' => 'Value of bar',
-    ));
+    ]);
 
 (Note that the array keys will map to object properties, so make sure they are valid as property names.)
 
@@ -68,10 +68,10 @@ Finally, we can replace all the `Template` data values at once using `setData()`
     <?php
     // business logic
     // this will remove $var, $foo, and $bar from the template
-    $template->setData(array(
+    $template->setData([
         'baz' => 'Value of baz',
         'dib' => 'Value of dib',
-    ));
+    ]);
 
 
 Writing Template Scripts
@@ -186,11 +186,11 @@ To tell the `TemplateFinder` where to find template scripts, get it from the `Te
     $finder = $template->getTemplateFinder();
     
     // set the paths where templates can be found
-    $finder->setPaths(array(
+    $finder->setPaths([
         '/path/to/templates/foo',
         '/path/to/templates/bar',
         '/path/to/templates/baz',
-    ));
+    ]);
 
 Now when we call `fetch()`, the `Template` object will use the `TemplateFinder` to look through those directories for the template script we specified.
 
@@ -242,7 +242,7 @@ For example, given the following partial template ...
     // main template. assume $this->list is an array of names.
     foreach ($this->list as $item) {
         $template_name = '_partial';
-        $template_vars = array('name' => $item);
+        $template_vars = ['name' => $item];
         echo $this->fetch($template_name, $template_vars);
     }
 
