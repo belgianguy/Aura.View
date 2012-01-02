@@ -1,5 +1,5 @@
 ---
-title: Aura for PHP: TemplateView and TwoStepView Implementation
+title: Aura for PHP -- TemplateView and TwoStepView Implementation
 layout: default
 ---
 
