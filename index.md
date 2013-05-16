@@ -15,6 +15,8 @@ Versions
 
 - `master` : <https://github.com/auraphp/Aura.View>
 
+- `1.1.2` : [.zip](https://github.com/auraphp/Aura.View/zipball/1.1.2), [.tar.gz](https://github.com/auraphp/Aura.View/tarball/1.1.2), [readme](version/1.1.2/), [api](version/1.1.2/api/)
+
 - `1.1.1` : [.zip](https://github.com/auraphp/Aura.View/zipball/1.1.1), [.tar.gz](https://github.com/auraphp/Aura.View/tarball/1.1.1), [readme](version/1.1.1/), [api](version/1.1.1/api/)
 
 - `1.1.0` : [.zip](https://github.com/auraphp/Aura.View/zipball/1.1.0), [.tar.gz](https://github.com/auraphp/Aura.View/tarball/1.1.0), [readme](version/1.1.0/), [api](version/1.1.0/api/)
